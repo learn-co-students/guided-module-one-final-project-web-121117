@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class CommandLineInterface
   def greet
     puts 'Welcome to TrainFinder, the command line solution to for your MTA train-finding needs!'
@@ -42,8 +44,10 @@ class CommandLineInterface
   end
 
   def show_stations(line)
+    url = Train.find_by(line: line).website
+    `open #{url}`
     stations = Train.find_by(line: line).stations
-    stations.map {|station| station.name}
+    p stations.map {|station| station.name}
   end
 
   def done

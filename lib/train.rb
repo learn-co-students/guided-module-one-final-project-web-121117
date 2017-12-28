@@ -6,5 +6,9 @@ class Train < ActiveRecord::Base
     self.stations << station
   end
 
-  
+  def add_website(website)
+    self.update(website: website)
+  end
+
+
 end
