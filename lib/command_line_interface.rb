@@ -11,7 +11,8 @@ class CommandLineInterface
     puts "\nChoose from one of the following options:"
     puts "     List All Stations".colorize(:color => :blue)
     puts "     List All Trains".colorize(:color => :blue)
-    puts "     Find Train".colorize(:color => :blue)
+    puts "     Find Stations Trains ".colorize(:color => :blue)
+    puts "     Find Trains Stations".colorize(:color => :blue)
     puts "     See Train Map".colorize(:color => :blue)
     puts "     See MTA Map".colorize(:color => :blue)
     puts "     Exit".colorize(:color => :blue) + " and say goodbye until next time."
@@ -24,7 +25,13 @@ class CommandLineInterface
   end
 
   def all_tubes
-    Tube.all.collect {|tube| tube.name}.sort!
+    Tube.all.collect {|tube| tube.name + " Train"}.sort!
+  end
+
+  def pre_find_station
+    puts "\n Which station are you looking for?"
+    puts all_stops
+    puts "\nType selection here:"
   end
 
   def find_station(input)
@@ -43,7 +50,7 @@ class CommandLineInterface
   end
 
   def show_trains(trains)
-    trains.map {|train| puts train.name}
+    trains.map {|train| puts train.name + " Train"}
   end
 
   def pre_find_train
@@ -76,10 +83,13 @@ class CommandLineInterface
     puts "     List All Stations".colorize(:color => :red)
     puts "     List All Trains".colorize(:color => :red)
     puts "     Find Train".colorize(:color => :red)
+    puts "     Create Train".colorize(:color => :red)
+    puts "     Create Station".colorize(:color => :red)
     puts "     Remove Train".colorize(:color => :red)
     puts "     Update Train URL".colorize(:color => :red)
     puts "     Delete Train".colorize(:color => :red)
     puts "     Delete Station".colorize(:color => :red)
+    puts "     Main Menu".colorize(:color => :red)
     puts "     Exit".colorize(:color => :red)
     puts "\nInput choice here:"
   end
@@ -95,7 +105,15 @@ class CommandLineInterface
       puts all_tubes
       puts "\n"
       run
-    elsif input == 'find train'
+    elsif input == 'find stations trains'
+      pre_find_station
+      new_input = gets.chomp
+      station = find_station(new_input)
+      tubes = find_trains(station)
+      show_trains(tubes)
+      puts "\n"
+      run
+    elsif input == 'find trains stations'
       pre_find_train
       new_input = gets.chomp
       tube = find_train(new_input)
@@ -143,6 +161,20 @@ class CommandLineInterface
       tube = find_train(new_input)
       stations = find_stations(tube)
       show_stations(stations)
+      puts "\n"
+      manager_access
+    elsif input == 'create train'
+      puts "\nPlease input name of new train here:"
+      name = gets.chomp
+      create_new_tube(name)
+      puts all_tubes
+      puts "\n"
+      manager_access
+    elsif input == 'create station'
+      puts "\nPlease input name of new station here:"
+      name = gets.chomp
+      create_new_station(name)
+      puts all_stops
       puts "\n"
       manager_access
     elsif input == 'remove train'
