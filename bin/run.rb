@@ -13,4 +13,4 @@ cli.greet
 #   cli.show_lines(lines)
 # end
 
-cli.show_stations("2")
+cli.show_stations("7")
