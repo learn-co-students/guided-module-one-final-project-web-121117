@@ -125,9 +125,14 @@ class CommandLineInterface
       pre_find_train
       new_input = gets.chomp
       train = find_train(new_input)
+      if train.url == nil
+        puts "\nSorry. We don't have a map for that. Come back next time."
+        run
+      else
       `open #{train.url}`
       puts "\n"
       run
+    end
     elsif input == 'see mta map'
       url = 'http://web.mta.info/maps/submap.html'
       `open #{url}`
